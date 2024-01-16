@@ -7,6 +7,7 @@ const Form = styled.form`
   border: 1px solid rgb(0, 0, 0);
   border-radius: 5px;
   padding: 20px;
+  background-color: #addeeb;
 
   label {
     display: flex;

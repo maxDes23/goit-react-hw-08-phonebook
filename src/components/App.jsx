@@ -17,7 +17,7 @@ const Container = styled.div`
   align-items: center;
   justify-content: center;
   height: 100vh;
-  background-color: bisque;
+  background-color: #f7f6d6;
 `;
 
 const App = () => {
