@@ -36,7 +36,7 @@ const App = () => {
   const dispatch = useDispatch();
   const { contacts, filter } = useSelector(state => state.contacts);
 
-  const user = useSelector(state => state.auth.user);
+  const user = useSelector(state => state.auth?.user);
 
   useEffect(() => {
     dispatch(fetchContacts());

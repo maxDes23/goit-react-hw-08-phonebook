@@ -14,15 +14,18 @@ const NavigationContainer = styled.nav`
     margin-right: 16px;
   }
 
-  .link {
+  button {
     display: inline-block;
     text-decoration: none;
     padding: 12px;
     font-weight: 700;
     color: #2a363b;
+    background: none;
+    border: none;
+    cursor: pointer;
   }
 
-  .link.active {
+  button[aria-current='page'] {
     color: #e84a5f;
   }
 `;
@@ -32,19 +35,19 @@ const Navigation = () => {
     <NavigationContainer>
       <ul>
         <li>
-          <Link className="link" to="/register">
+          <button as={Link} to="/register">
             Register
-          </Link>
+          </button>
         </li>
         <li>
-          <Link className="link" to="/login">
+          <button as={Link} to="/login">
             Login
-          </Link>
+          </button>
         </li>
         <li>
-          <Link className="link" to="/contacts">
+          <button as={Link} to="/contacts">
             Contacts
-          </Link>
+          </button>
         </li>
       </ul>
     </NavigationContainer>
