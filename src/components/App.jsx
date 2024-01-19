@@ -1,10 +1,14 @@
-
-import React, { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React, { useEffect, lazy, Suspense } from 'react';
+import { useDispatch } from 'react-redux';
 import { Route, Routes } from 'react-router-dom';
 import ContactForm from './ContactForm/ContactForm';
 import ContactList from './ContactList/ContactList';
+import { LayoutContainer as Layout } from './Layout';
+import { useSelector } from 'react-redux';
+import { RestrictedRoute } from './RestrictedRoute';
+import { PrivateRoute } from './PrivateRoute';
 import Filter from './Filter/Filter';
+
 import styled from 'styled-components';
 import {
   addContact,
@@ -12,9 +16,12 @@ import {
   setFilter,
   fetchContacts,
 } from './contactsSlice';
-import { login, logout } from '../redux/authSlice';
-import Register from './Register';
-import Login from './Login';
+import { logout } from '../redux/authSlice';
+
+const HomePage = lazy(() => import('../pages/Home'));
+const RegisterPage = lazy(() => import('../pages/Register'));
+const LoginPage = lazy(() => import('../pages/Login'));
+const TasksPage = lazy(() => import('../pages/Tasks'));
 
 const Container = styled.div`
   display: flex;
@@ -27,8 +34,8 @@ const Container = styled.div`
 
 const App = () => {
   const dispatch = useDispatch();
-  const contacts = useSelector(state => state.contacts.items);
-  const filter = useSelector(state => state.contacts.filter);
+  const { contacts, filter } = useSelector(state => state.contacts);
+
   const user = useSelector(state => state.auth.user);
 
   useEffect(() => {
@@ -50,27 +57,34 @@ const App = () => {
   const handleLogout = () => {
     dispatch(logout());
   };
-
-  const filteredContacts = contacts
-    ? contacts.filter(contact =>
-        contact.name.toLowerCase().includes(filter.toLowerCase())
-      )
-    : [];
-
+ const userName = user?.email;
   return (
     <Container>
       <h1>Phonebook</h1>
       {user && (
         <>
-          <p>Welcome, {user.email}!</p>
+          <p>Welcome, {userName}!</p>
           <button onClick={handleLogout}>Logout</button>
           <ContactForm onSubmit={handleAddContact} />
           <h2>Contacts</h2>
-          <Filter value={filter} onChange={handleFilterChange} />
-          <ContactList
-            contacts={filteredContacts}
-            onDeleteContact={handleDeleteContact}
-          />
+          {contacts && (
+            <>
+              <Filter value={filter} onChange={handleFilterChange} />
+              <ContactList
+                contacts={contacts
+                  .filter(contact =>
+                    contact.name.toLowerCase().includes(filter.toLowerCase())
+                  )
+                  .map(contact => (
+                    <ContactList
+                      key={contact.id}
+                      {...contact}
+                      onDelete={handleDeleteContact}
+                    />
+                  ))}
+              />
+            </>
+          )}
         </>
       )}
       {!user && (
@@ -79,9 +93,46 @@ const App = () => {
         </>
       )}
       <Routes>
-        <Route path="/register" component={Register} />
-        <Route path="/login" component={Login} />
-       
+        <Route path="/" element={<Layout />}>
+          <Route
+            index
+            element={
+              <Suspense fallback={<div>Loading...</div>}>
+                <HomePage />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/register"
+            element={
+              <Suspense fallback={<div>Loading...</div>}>
+                <RestrictedRoute
+                  redirectTo="/tasks"
+                  component={<RegisterPage />}
+                />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/login"
+            element={
+              <Suspense fallback={<div>Loading...</div>}>
+                <RestrictedRoute
+                  redirectTo="/tasks"
+                  component={<LoginPage />}
+                />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/tasks"
+            element={
+              <Suspense fallback={<div>Loading...</div>}>
+                <PrivateRoute redirectTo="/login" component={<TasksPage />} />
+              </Suspense>
+            }
+          />
+        </Route>
       </Routes>
     </Container>
   );

@@ -36,6 +36,7 @@ export default function Login() {
     initialValues: {
       email: '',
       password: '',
+      rememberMe: false,
     },
     onSubmit: async values => {
       try {
@@ -77,6 +78,16 @@ export default function Login() {
                 onChange={formik.handleChange}
                 value={formik.values.password}
               />
+            </FormControl>
+            <FormControl>
+              <Checkbox
+                id="rememberMe"
+                name="rememberMe"
+                onChange={formik.handleChange}
+                isChecked={formik.values.rememberMe}
+              >
+                Remember me
+              </Checkbox>
             </FormControl>
             <StyledButton type="submit" colorScheme="purple">
               Login

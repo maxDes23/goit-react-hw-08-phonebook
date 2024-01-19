@@ -1,10 +1,5 @@
-
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-
-// Замість URL_TO_YOUR_BACKEND тут повинен бути реальний URL до ендпоінтів авторизації та реєстрації на бекенді.
 const API_URL = 'URL_TO_YOUR_BACKEND/auth';
-
-
 export const registerAsync = createAsyncThunk(
   'auth/register',
   async ({ email, password }) => {
@@ -26,7 +21,6 @@ export const registerAsync = createAsyncThunk(
   }
 );
 
-
 export const loginAsync = createAsyncThunk(
   'auth/login',
   async ({ email, password }) => {
@@ -47,7 +41,6 @@ export const loginAsync = createAsyncThunk(
     return userData;
   }
 );
-
 
 const authSlice = createSlice({
   name: 'auth',
