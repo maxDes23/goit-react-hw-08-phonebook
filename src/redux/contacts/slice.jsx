@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { logOut } from '../auth/operations';
-import { fetchTasks, addTask, deleteTask } from './operations';
+import { fetchContacts, addContacts, deleteContacts } from './operations';
 
 const initializeState = () => ({
   items: [],
@@ -8,45 +8,45 @@ const initializeState = () => ({
   error: null,
 });
 
-const tasksSlice = createSlice({
-  name: 'tasks',
+const ContactsSlice = createSlice({
+  name: 'contacts',
   initialState: initializeState(),
   reducers: {},
   extraReducers: builder => {
     builder
-      .addCase(fetchTasks.pending, state => {
+      .addCase(fetchContacts.pending, state => {
         state.isLoading = true;
       })
-      .addCase(fetchTasks.fulfilled, (state, action) => {
+      .addCase(fetchContacts.fulfilled, (state, action) => {
         state.isLoading = false;
         state.error = null;
         state.items = action.payload;
       })
-      .addCase(fetchTasks.rejected, (state, action) => {
+      .addCase(fetchContacts.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload;
       })
-      .addCase(addTask.pending, state => {
+      .addCase(addContacts.pending, state => {
         state.isLoading = true;
       })
-      .addCase(addTask.fulfilled, (state, action) => {
+      .addCase(addContacts.fulfilled, (state, action) => {
         state.isLoading = false;
         state.error = null;
         state.items = [...state.items, action.payload];
       })
-      .addCase(addTask.rejected, (state, action) => {
+      .addCase(addContacts.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload;
       })
-      .addCase(deleteTask.pending, state => {
+      .addCase(deleteContacts.pending, state => {
         state.isLoading = true;
       })
-      .addCase(deleteTask.fulfilled, (state, action) => {
+      .addCase(deleteContacts.fulfilled, (state, action) => {
         state.isLoading = false;
         state.error = null;
-        state.items = state.items.filter(task => task.id !== action.payload.id);
+        state.items = state.items.filter(contacts => contacts.id !== action.payload.id);
       })
-      .addCase(deleteTask.rejected, (state, action) => {
+      .addCase(deleteContacts.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload;
       })
@@ -56,4 +56,4 @@ const tasksSlice = createSlice({
   },
 });
 
-export const tasksReducer = tasksSlice.reducer;
+export const ContactsReducer = ContactsSlice.reducer;

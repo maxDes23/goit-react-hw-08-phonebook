@@ -6,7 +6,7 @@ const LinksContainer = styled.div`
   display: flex;
 `;
 
-const Link = styled(NavLink)`
+const StyledNavLink = styled(NavLink)`
   display: inline-block;
   text-decoration: none;
   padding: 12px;
@@ -18,22 +18,16 @@ const Link = styled(NavLink)`
     margin-right: 0;
   }
 
-  &.active {
+  &:hover {
     color: #e84a5f;
   }
 `;
 
-const AuthNav = () => {
+export const AuthNav = () => {
   return (
     <LinksContainer>
-      <Link to="/register" activeClassName="active">
-        Register
-      </Link>
-      <Link to="/login" activeClassName="active">
-        Log In
-      </Link>
+      <StyledNavLink to="/register">Register</StyledNavLink>
+      <StyledNavLink to="/login">Log In</StyledNavLink>
     </LinksContainer>
   );
 };
-
-export default AuthNav;

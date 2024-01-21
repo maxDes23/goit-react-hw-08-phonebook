@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 
+
 const Form = styled.form`
   display: flex;
   flex-direction: column;
@@ -39,13 +40,15 @@ const ContactForm = ({ onSubmit }) => {
     setNumber(evt.target.value);
   };
 
-  const handleSubmit = e => {
-    e.preventDefault();
+ const handleSubmit = e => {
+   e.preventDefault();
 
-    onSubmit(name, number);
-    setName('');
-    setNumber('');
-  };
+   if (onSubmit && typeof onSubmit === 'function') {
+     onSubmit(name, number);
+     setName('');
+     setNumber('');
+   }
+ };
 
   return (
     <Form onSubmit={handleSubmit}>

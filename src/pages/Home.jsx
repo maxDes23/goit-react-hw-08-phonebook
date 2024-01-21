@@ -1,30 +1,26 @@
-import React from 'react';
-import styled from 'styled-components';
+const styles = {
+  container: {
+    minHeight: 'calc(100vh - 50px)',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  title: {
+    fontWeight: 500,
+    fontSize: 48,
+    textAlign: 'center',
+  },
+};
 
-const Container = styled.div`
-  min-height: calc(100vh - 50px);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`;
-
-const Title = styled.h1`
-  font-weight: 500;
-  font-size: 48px;
-  text-align: center;
-`;
-
-const Home = () => {
+export default function Home() {
   return (
-    <Container>
-      <Title>
+    <div style={styles.container}>
+      <h1 style={styles.title}>
         Task manager welcome page{' '}
         <span role="img" aria-label="Greeting icon">
           💁‍♀️
         </span>
-      </Title>
-    </Container>
+      </h1>
+    </div>
   );
-};
-
-export default Home;
+}

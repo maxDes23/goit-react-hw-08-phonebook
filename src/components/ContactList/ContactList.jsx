@@ -4,7 +4,6 @@ import styled from 'styled-components';
 const List = styled.ul`
   list-style-type: none;
   padding: 0;
-  
 
   li {
     display: flex;
@@ -14,7 +13,6 @@ const List = styled.ul`
     padding: 10px 0;
     border-bottom: 1px solid #ccc;
 
-
     button {
       padding: 5px;
       border-radius: 5px;
@@ -23,17 +21,23 @@ const List = styled.ul`
   }
 `;
 
-const ContactList = ({ contacts, onDeleteContact }) => (
-  <List>
-    {contacts.map(contact => (
-      <li key={contact.id}>
-        {contact.name}: {contact.number}
-        <button type="button" onClick={() => onDeleteContact(contact.id)}>
-          Delete
-        </button>
-      </li>
-    ))}
-  </List>
-);
+const ContactList = ({ contacts, onDeleteContact }) => {
+  if (!contacts || !Array.isArray(contacts)) {
+    return null;
+  }
+
+  return (
+    <List>
+      {contacts.map(contact => (
+        <li key={contact.id}>
+          {contact.name}: {contact.number}
+          <button type="button" onClick={() => onDeleteContact(contact.id)}>
+            Delete
+          </button>
+        </li>
+      ))}
+    </List>
+  );
+};
 
 export default ContactList;

@@ -1,57 +1,31 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
+import { useAuth } from 'hooks';
 import styled from 'styled-components';
 
-const NavigationContainer = styled.nav`
-  ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    display: flex;
-  }
+const Nav = styled.nav`
+  display: flex;
+`;
 
-  li {
-    margin-right: 16px;
-  }
+const Link = styled(NavLink)`
+  text-decoration: none;
+  padding: 8px;
+  margin-right: 16px;
+  font-weight: 600;
+  color: #2a363b;
 
-  button {
-    display: inline-block;
-    text-decoration: none;
-    padding: 12px;
-    font-weight: 700;
-    color: #2a363b;
-    background: none;
-    border: none;
-    cursor: pointer;
-  }
-
-  button[aria-current='page'] {
+  &:hover {
     color: #e84a5f;
   }
 `;
 
-const Navigation = () => {
+export const Navigation = () => {
+  const { isLoggedIn } = useAuth();
+
   return (
-    <NavigationContainer>
-      <ul>
-        <li>
-          <button as={Link} to="/register">
-            Register
-          </button>
-        </li>
-        <li>
-          <button as={Link} to="/login">
-            Login
-          </button>
-        </li>
-        <li>
-          <button as={Link} to="/contacts">
-            Contacts
-          </button>
-        </li>
-      </ul>
-    </NavigationContainer>
+    <Nav>
+      <Link to="/">Home</Link>
+      {isLoggedIn && <Link to="/contacts">Contacts</Link>}
+    </Nav>
   );
 };
-
-export default Navigation;

@@ -1,117 +1,67 @@
-import { useFormik } from 'formik';
-import { useState } from 'react';
+import React from 'react';
+import { useDispatch } from 'react-redux';
+import { register } from '../../redux/auth/operations';
 import styled from 'styled-components';
-import axios from 'axios';
-import {
-  Box,
-  Button,
-  Checkbox,
-  Flex,
-  FormControl,
-  FormLabel,
-  Input,
-  VStack,
-} from '@chakra-ui/react';
 
-
-const StyledFlex = styled(Flex)`
-  background-color: gray.100;
-  height: 100vh;
-  align-items: center;
-  justify-content: center;
+const Form = styled.form`
+  display: flex;
+  flex-direction: column;
+  max-width: 300px;
+  margin: 0 auto;
 `;
 
-const StyledBox = styled(Box)`
-  background-color: white;
-  padding: 16px;
-  border-radius: 8px;
+const Label = styled.label`
+  margin-bottom: 8px;
 `;
 
-const StyledButton = styled(Button)`
-  width: full;
+const Input = styled.input`
+  padding: 8px;
+  margin-top: 4px;
 `;
 
-const StyledCheckbox = styled(Checkbox)`
-  margin-bottom: 16px;
+const Button = styled.button`
+  padding: 8px;
+  background-color: #2a363b;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #e84a5f;
+  }
 `;
 
-export default function Register() {
-  const [error, setError] = useState(null);
-  const formik = useFormik({
-    initialValues: {
-      email: '',
-      password: '',
-      confirmPassword: '',
-      agreeTerms: false,
-    },
-    onSubmit: async values => {
-      try {
-        const response = await axios.post(
-          'URL_TO_YOUR_BACKEND_REGISTER_ENDPOINT',
-          values
-        );
+export const RegisterForm = () => {
+  const dispatch = useDispatch();
 
-        console.log(response.data);
-      } catch (error) {
-        setError(error.response.data.message || 'Помилка реєстрації');
-      }
-    },
-  });
+  const handleSubmit = e => {
+    e.preventDefault();
+    const form = e.currentTarget;
+    dispatch(
+      register({
+        name: form.elements.name.value,
+        email: form.elements.email.value,
+        password: form.elements.password.value,
+      })
+    );
+    form.reset();
+  };
 
   return (
-    <StyledFlex>
-      <StyledBox>
-        <form onSubmit={formik.handleSubmit}>
-          <VStack spacing={4} align="flex-start">
-            <FormControl>
-              <FormLabel htmlFor="email">Email Address</FormLabel>
-              <Input
-                id="email"
-                name="email"
-                type="email"
-                variant="filled"
-                onChange={formik.handleChange}
-                value={formik.values.email}
-              />
-            </FormControl>
-            <FormControl>
-              <FormLabel htmlFor="password">Password</FormLabel>
-              <Input
-                id="password"
-                name="password"
-                type="password"
-                variant="filled"
-                onChange={formik.handleChange}
-                value={formik.values.password}
-              />
-            </FormControl>
-            <FormControl>
-              <FormLabel htmlFor="confirmPassword">Confirm Password</FormLabel>
-              <Input
-                id="confirmPassword"
-                name="confirmPassword"
-                type="password"
-                variant="filled"
-                onChange={formik.handleChange}
-                value={formik.values.confirmPassword}
-              />
-            </FormControl>
-            <StyledCheckbox
-              id="agreeTerms"
-              name="agreeTerms"
-              onChange={formik.handleChange}
-              isChecked={formik.values.agreeTerms}
-              colorScheme="purple"
-            >
-              Agree to Terms and Conditions
-            </StyledCheckbox>
-            <StyledButton type="submit" colorScheme="purple">
-              Register
-            </StyledButton>
-            {error && <p style={{ color: 'red' }}>{error}</p>}
-          </VStack>
-        </form>
-      </StyledBox>
-    </StyledFlex>
+    <Form onSubmit={handleSubmit} autoComplete="off">
+      <Label>
+        Username
+        <Input type="text" name="name" />
+      </Label>
+      <Label>
+        Email
+        <Input type="email" name="email" />
+      </Label>
+      <Label>
+        Password
+        <Input type="password" name="password" />
+      </Label>
+      <Button type="submit">Register</Button>
+    </Form>
   );
-}
+};
