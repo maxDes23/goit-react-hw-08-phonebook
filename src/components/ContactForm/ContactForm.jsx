@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { addContacts } from '../../redux/contacts/operations';
 import styled from 'styled-components';
-
 
 const Form = styled.form`
   display: flex;
@@ -28,7 +29,8 @@ const Form = styled.form`
   }
 `;
 
-const ContactForm = ({ onSubmit }) => {
+const ContactForm = () => {
+  const dispatch = useDispatch();
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
 
@@ -40,15 +42,17 @@ const ContactForm = ({ onSubmit }) => {
     setNumber(evt.target.value);
   };
 
- const handleSubmit = e => {
-   e.preventDefault();
+  const handleSubmit = e => {
+    e.preventDefault();
+    if (!name || !number) {
+      alert('Please fill in all fields');
+      return;
+    }
 
-   if (onSubmit && typeof onSubmit === 'function') {
-     onSubmit(name, number);
-     setName('');
-     setNumber('');
-   }
- };
+    dispatch(addContacts({ name, number }));
+    setName('');
+    setNumber('');
+  };
 
   return (
     <Form onSubmit={handleSubmit}>
@@ -57,7 +61,6 @@ const ContactForm = ({ onSubmit }) => {
         <input
           type="text"
           name="name"
-          pattern="^[a-zA-Zа-яА-Я]+(([' \-][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
           value={name}
           onChange={handleNameChange}
           required
@@ -69,11 +72,10 @@ const ContactForm = ({ onSubmit }) => {
         <input
           type="tel"
           name="number"
-          pattern="\+?\d{1,4}?[ .\-\s]?\(?\d{1,3}?\)?[ .\-\s]?\d{1,4}[ .\-\s]?\d{1,4}[ .\-\s]?\d{1,9}"
-          placeholder="0123456789"
           value={number}
           onChange={handleNumberChange}
           required
+          placeholder="0123456789"
         />
       </label>
       <button type="submit">Add contact</button>

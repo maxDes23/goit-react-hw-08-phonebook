@@ -6,11 +6,19 @@ import styled from 'styled-components';
 const Form = styled.form`
   display: flex;
   flex-direction: column;
-  max-width: 300px;
+  align-items: flex-end;
+  max-width: 250px;
   margin: 0 auto;
+  background: linear-gradient(to right, #dad47e, #2489c4);
+  width: 100%;
+  border-radius: 8px;
+  padding: 40px;
 `;
 
 const Label = styled.label`
+  display: flex;
+  align-items: center;
+  gap: 10px;
   margin-bottom: 8px;
 `;
 
@@ -20,10 +28,11 @@ const Input = styled.input`
 `;
 
 const Button = styled.button`
-  padding: 8px;
+  padding: 7px 20px;
   background-color: #2a363b;
   color: #fff;
-  border: none;
+  border: 2;
+  border-radius: 5px;
   cursor: pointer;
 
   &:hover {
@@ -50,7 +59,7 @@ export const RegisterForm = () => {
   return (
     <Form onSubmit={handleSubmit} autoComplete="off">
       <Label>
-        Username
+        Name
         <Input type="text" name="name" />
       </Label>
       <Label>
