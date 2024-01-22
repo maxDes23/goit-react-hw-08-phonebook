@@ -12,6 +12,7 @@ const Wrapper = styled.div`
 const Username = styled.p`
   margin: 0;
   margin-right: 16px;
+  font-weight: 600;
 `;
 
 const LogoutButton = styled.button`
@@ -20,6 +21,7 @@ const LogoutButton = styled.button`
   border: none;
   padding: 8px;
   border-radius: 5px;
+ 
   cursor: pointer;
 
   &:hover {

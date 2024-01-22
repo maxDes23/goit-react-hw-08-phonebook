@@ -9,7 +9,9 @@ const Header = styled.header`
   justify-content: space-between;
   align-items: center;
   margin-bottom: 16px;
+  background-color: #f0e36d;
   border-bottom: 1px solid #2a363b;
+  padding: 8px;
 `;
 
 export const AppBar = () => {

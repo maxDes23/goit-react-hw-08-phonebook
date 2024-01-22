@@ -9,10 +9,12 @@ const LinksContainer = styled.div`
 const StyledNavLink = styled(NavLink)`
   display: inline-block;
   text-decoration: none;
-  padding: 12px;
+  padding: 7px;
   font-weight: 700;
   color: #2a363b;
   margin-right: 10px;
+  background-color: #64aef3;
+  border-radius: 3px;
 
   &:last-child {
     margin-right: 0;
