@@ -19,6 +19,7 @@ export default function ContactsPage() {
       console.error('deleteContact is not defined');
     }
   };
+  
 
   return (
     <>
