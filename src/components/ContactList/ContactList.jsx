@@ -21,7 +21,7 @@ const List = styled.ul`
   }
 `;
 
-const ContactList = ({ contacts, onDeleteContact }) => {
+const ContactList = ({ contacts, deleteContact }) => {
   if (!contacts || !Array.isArray(contacts)) {
     return null;
   }
@@ -31,7 +31,7 @@ const ContactList = ({ contacts, onDeleteContact }) => {
       {contacts.map(contact => (
         <li key={contact.id}>
           {contact.name}: {contact.number}
-          <button type="button" onClick={() => onDeleteContact(contact.id)}>
+          <button type="button" onClick={() => deleteContact(contact.id)}>
             Delete
           </button>
         </li>

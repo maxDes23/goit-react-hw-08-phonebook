@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-
+import axios from 'axios';
 const BASE_URL =
   'https://connections-api.herokuapp.com';
 
@@ -20,41 +20,30 @@ export const fetchContacts = createAsyncThunk(
 );
 
 export const addContact = createAsyncThunk(
-  'contacts/addContact',
-  async (contact, { getState, rejectWithValue }) => {
+  'contacts/addContacts',
+  async ({ name, number }, thunkAPI) => {
     try {
-      const state = getState();
+      const state = thunkAPI.getState();
+      
       const existingContact = state.contacts.items.find(
-        c => c.name.toLowerCase() === contact.name.toLowerCase()
+        contact => contact.name.toLowerCase() === name.toLowerCase()
       );
 
       if (existingContact) {
         throw new Error('Contact with the same name already exists!');
       }
 
-      const response = await fetch(BASE_URL, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(contact),
-      });
-
-      if (!response.ok) {
-        throw new Error('Failed to add contact');
-      }
-
-      const data = await response.json();
-      return data;
-    } catch (error) {
-      window.alert(error.message);
-      return rejectWithValue(error.message);
+      const response = await axios.post('/contacts', { name, number });
+      return response.data;
+    } catch (e) {
+      return thunkAPI.rejectWithValue(e.message);
     }
   }
 );
 
-export const deleteContact = createAsyncThunk(
-  'contacts/deleteContact',
+
+export const deleteContacts = createAsyncThunk(
+  'contacts/deleteContacts',
   async (contactId, { rejectWithValue }) => {
     try {
       const response = await fetch(`${BASE_URL}/${contactId}`, {
@@ -69,7 +58,6 @@ export const deleteContact = createAsyncThunk(
     }
   }
 );
-
 const contactsSlice = createSlice({
   name: 'contacts',
   initialState: {
@@ -109,17 +97,17 @@ const contactsSlice = createSlice({
         state.isLoading = false;
         state.error = action.payload;
       })
-      .addCase(deleteContact.pending, state => {
+      .addCase(deleteContacts.pending, state => {
         state.isLoading = true;
         state.error = null;
       })
-      .addCase(deleteContact.fulfilled, (state, action) => {
+      .addCase(deleteContacts.fulfilled, (state, action) => {
         state.items = state.items.filter(
           contact => contact.id !== action.payload
         );
         state.isLoading = false;
       })
-      .addCase(deleteContact.rejected, (state, action) => {
+      .addCase(deleteContacts.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload;
       });
