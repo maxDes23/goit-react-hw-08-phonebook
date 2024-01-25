@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { addContacts } from '../../redux/contacts/operations';
 import styled from 'styled-components';
 
@@ -31,6 +31,8 @@ const Form = styled.form`
 
 const ContactForm = () => {
   const dispatch = useDispatch();
+  const contacts = useSelector(state => state.contacts.items);
+
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
 
@@ -44,8 +46,18 @@ const ContactForm = () => {
 
   const handleSubmit = e => {
     e.preventDefault();
+
     if (!name || !number) {
       alert('Please fill in all fields');
+      return;
+    }
+
+    const existingContact = contacts.find(
+      contact => contact.name.toLowerCase() === name.toLowerCase()
+    );
+
+    if (existingContact) {
+      alert('Contact with the same name already exists!');
       return;
     }
 

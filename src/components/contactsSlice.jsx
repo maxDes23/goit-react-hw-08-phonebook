@@ -1,7 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
-const BASE_URL =
-  'https://connections-api.herokuapp.com';
+const BASE_URL = 'https://connections-api.herokuapp.com';
 
 export const fetchContacts = createAsyncThunk(
   'contacts/fetchAll',
@@ -20,7 +19,7 @@ export const addContact = createAsyncThunk(
   async ({ name, number }, thunkAPI) => {
     try {
       const state = thunkAPI.getState();
-      
+
       const existingContact = state.contacts.items.find(
         contact => contact.name.toLowerCase() === name.toLowerCase()
       );
@@ -30,6 +29,7 @@ export const addContact = createAsyncThunk(
       }
 
       const response = await axios.post('/contacts', { name, number });
+      thunkAPI.dispatch(fetchContacts());
       return response.data;
     } catch (e) {
       return thunkAPI.rejectWithValue(e.message);
@@ -37,10 +37,9 @@ export const addContact = createAsyncThunk(
   }
 );
 
-
 export const deleteContacts = createAsyncThunk(
   'contacts/deleteContacts',
-  async (contactId, { rejectWithValue }) => {
+  async (contactId, { rejectWithValue, dispatch }) => {
     try {
       const response = await fetch(`${BASE_URL}/${contactId}`, {
         method: 'DELETE',
@@ -48,12 +47,15 @@ export const deleteContacts = createAsyncThunk(
       if (!response.ok) {
         throw new Error('Failed to delete contact');
       }
+
+      dispatch(fetchContacts());
       return contactId;
     } catch (error) {
       return rejectWithValue(error.message);
     }
   }
 );
+
 const contactsSlice = createSlice({
   name: 'contacts',
   initialState: {
