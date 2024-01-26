@@ -13,6 +13,8 @@ const clearAuthHeader = () => {
   axios.defaults.headers.common.Authorization = '';
 };
 
+
+
 /*
  * POST @ /users/signup
  * body: { name, email, password }
@@ -65,6 +67,7 @@ export const logOut = createAsyncThunk('auth/logout', async (_, thunkAPI) => {
  * GET @ /users/current
  * headers: Authorization: Bearer token
  */
+
 export const refreshUser = createAsyncThunk(
   'auth/refresh',
   async (_, thunkAPI) => {
