@@ -1,6 +1,6 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import { useAuth } from 'hooks';
+import  useAuth  from 'hooks/useAuth';
 import styled from 'styled-components';
 
 const Nav = styled.nav`

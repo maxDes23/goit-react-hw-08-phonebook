@@ -1,25 +1,28 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import ContactForm from '../components/ContactForm/ContactForm';
 import ContactList from '../components/ContactList/ContactList';
 import Filter from '../components/Filter/Filter';
 import { Box, Container, CssBaseline } from '@mui/material';
 
-import { deleteContact } from '../redux/contacts/operations'; 
+import { deleteContact } from '../redux/contacts/operations';
 
 export default function ContactsPage() {
   const contacts = useSelector(state => state.contacts.items);
   const dispatch = useDispatch();
+  const [filter, setFilter] = useState('');
 
   const handleDeleteContact = contactId => {
-
     if (typeof deleteContact === 'function') {
       dispatch(deleteContact(contactId));
     } else {
       console.error('deleteContact is not defined');
     }
   };
-  
+
+  const handleFilterChange = e => {
+    setFilter(e.target.value);
+  };
 
   return (
     <>
@@ -38,7 +41,7 @@ export default function ContactsPage() {
           }}
         >
           <ContactForm />
-          <Filter />
+          <Filter value={filter} onChange={handleFilterChange} />
           <ContactList
             contacts={contacts}
             deleteContact={handleDeleteContact}

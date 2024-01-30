@@ -1,7 +1,7 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
 import { logOut } from '../../redux/auth/operations';
-import { useAuth } from 'hooks';
+import  useAuth  from 'hooks/useAuth';
 import styled from 'styled-components';
 
 const Wrapper = styled.div`
