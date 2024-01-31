@@ -12,12 +12,12 @@ export default function ContactsPage() {
   const dispatch = useDispatch();
   const [filter, setFilter] = useState('');
 
+  const filteredContacts = contacts.filter(contact =>
+    contact.name.toLowerCase().includes(filter.toLowerCase())
+  );
+
   const handleDeleteContact = contactId => {
-    if (typeof deleteContact === 'function') {
-      dispatch(deleteContact(contactId));
-    } else {
-      console.error('deleteContact is not defined');
-    }
+    dispatch(deleteContact(contactId));
   };
 
   const handleFilterChange = e => {
@@ -43,7 +43,7 @@ export default function ContactsPage() {
           <ContactForm />
           <Filter value={filter} onChange={handleFilterChange} />
           <ContactList
-            contacts={contacts}
+            contacts={filteredContacts}
             deleteContact={handleDeleteContact}
           />
         </Box>
